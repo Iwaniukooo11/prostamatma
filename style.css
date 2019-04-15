@@ -595,6 +595,10 @@ footer::after {
         font-size: 40px;
     }
 
+    div.stop:hover {
+        cursor: pointer;
+    }
+
     .btnStart {
         font-size: 40px;
     }

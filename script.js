@@ -63,7 +63,6 @@ const endOfGame = function (uS) {
     MainH3.innerHTML = `Twoja ilośc punktów: ${uS}/10 <br> Zagraj jeszcze raz!`
     MainH3.classList.add('end')
     gameBlock.style.display = 'none'
-    // userScore = 0
 }
 
 const game = function () {
@@ -195,7 +194,7 @@ const game = function () {
         default:
             gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
     }
-    // gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: ${lvl}`
+
 }
 
 startGameButton.addEventListener('click', game)
