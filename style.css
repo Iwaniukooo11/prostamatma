@@ -35,6 +35,10 @@ button:hover {
     color: var(--orange)
 }
 
+span.orange {
+    font-weight: bold;
+}
+
 .h2 {
     text-align: center;
     padding: 10px;
@@ -130,7 +134,8 @@ section.about {
 .about p {
     margin: 10px auto 20px;
     padding: 5px;
-    text-align: justify;
+    text-align: center;
+    letter-spacing: 1px;
 }
 
 .done-ul {
