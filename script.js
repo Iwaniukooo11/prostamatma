@@ -2,7 +2,6 @@ const main = document.querySelector('main')
 const rowButton = document.querySelector('button.row')
 const playButtons = document.querySelectorAll('button.btnG')
 const startGameButton = document.querySelector('button.btnStart')
-let clicked = false
 let numOfIterations = 0
 let lvl, userScore = 0
 let a, b, score, x, j, used, w, doubled
@@ -15,6 +14,127 @@ const alert = document.querySelector('div.alert')
 const gameProgress = document.querySelector('div.game-progress')
 const gameBlock = document.querySelector('.button-wrap-after')
 
+const gameMetods = {
+    addRemoveItems() {
+        MainH3.classList.remove('start')
+        MainH3.classList.add('ingame')
+        startGameButton.classList.remove('start')
+        startGameButton.classList.add('ingame')
+        answersWrap.classList.remove('start')
+        answersWrap.classList.add('ingame')
+        XGame.classList.add('ingame')
+        XGame.classList.remove('start')
+        spanInfo.classList.add('ingame')
+        spanInfo.classList.remove('start')
+        gameProgress.classList.add('ingame')
+        gameProgress.classList.remove('start')
+    },
+    createAB(lvl, numOfIterations) {
+        if (lvl == 'easy') {
+            a = Math.floor((Math.random() * 50))
+            b = Math.floor((Math.random() * 50))
+        } else if (lvl == 'medium' && numOfIterations < 7) {
+            a = Math.floor((Math.random() * 50) + 25)
+            b = Math.floor((Math.random() * 50) + 25)
+        } else if (lvl == 'medium' && numOfIterations >= 7) {
+            a = Math.floor((Math.random() * 13) + 5)
+            b = Math.floor((Math.random() * 13) + 5)
+        } else if (lvl == 'hard' && numOfIterations <= 5) {
+            a = Math.floor((Math.random() * 50) + 13)
+            b = Math.floor((Math.random() * 50) + 13)
+        } else if (lvl == 'hard' && numOfIterations <= 7) {
+            a = Math.floor((Math.random() * 14) + 12)
+            b = Math.floor((Math.random() * 14) + 12)
+        } else if (lvl == 'hard' && numOfIterations > 7) {
+            a = Math.floor((Math.random() * 5) + 1)
+            b = Math.floor((Math.random() * 5) + 1)
+        }
+        return [a, b]
+    },
+    createScore(lvl, numOfIterations) {
+        if (lvl == 'easy' && numOfIterations < 5)
+            score = a + b;
+        else if (lvl == 'easy' && numOfIterations >= 5)
+            score = Math.max(a, b) - Math.min(a, b)
+        else if (lvl == 'medium' && numOfIterations <= 3) {
+            score = a + b;
+        } else if (lvl == 'medium' && numOfIterations <= 6) {
+            score = Math.max(a, b) - Math.min(a, b)
+        } else if (lvl == 'medium' && numOfIterations >= 7) {
+            score = a * b;
+        } else if (lvl == 'hard' && numOfIterations <= 1) {
+            score = a + b
+        } else if (lvl == 'hard' && numOfIterations <= 4) {
+            score = Math.max(a, b) - Math.min(a, b)
+        } else if (lvl == 'hard' && numOfIterations <= 7) {
+            score = a * b;
+        } else if (lvl == 'hard' && numOfIterations > 7) {
+            score = a ** b
+        }
+        return score
+    },
+    createAnswers(score) {
+        used = ""
+        x = Math.floor((Math.random() * 4))
+        answerButtons[x].textContent = score;
+        used += x;
+        j = 0;
+        while (used.length != 4) {
+            x = Math.floor((Math.random() * 4))
+            if (used.includes(x) == false && answerButtons[j].textContent != "a") {
+                w = Math.floor(Math.random() * (1.2 * score - 0.8 * score) + 0.8 * score)
+                do {
+                    doubled = false
+                    answerButtons.forEach((e) => {
+                        if (e.textContent == w)
+                            doubled = true
+                    })
+                    if (doubled)
+                        w++
+                } while (doubled)
+                answerButtons[x].textContent = w
+                used += x;
+            }
+            j++
+            if (j == 4)
+                j = 0
+        }
+    },
+    createSpanInfotextContent(lvl, numOfIterations) {
+        if (lvl == 'easy' && numOfIterations < 5)
+            spanInfo.textContent = (`${a}+${b}=?`)
+        else if (lvl == 'easy' && numOfIterations >= 5)
+            spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+        else if (lvl == 'medium' && numOfIterations <= 3)
+            spanInfo.textContent = (`${a}+${b}=?`)
+        else if (lvl == 'medium' && numOfIterations <= 6)
+            spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+        else if (lvl == 'medium' && numOfIterations >= 7)
+            spanInfo.textContent = (`${a}*${b}=?`)
+        else if (lvl == 'hard' && numOfIterations <= 1) {
+            spanInfo.textContent = (`${a}+${b}=?`)
+        } else if (lvl == 'hard' && numOfIterations <= 4) {
+            spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+        } else if (lvl == 'hard' && numOfIterations <= 7) {
+            spanInfo.textContent = (`${a}*${b}=?`)
+        } else if (lvl == 'hard' && numOfIterations > 7) {
+            spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
+        }
+    },
+    createShowProgress(lvl, numOfIterations) {
+        switch (lvl) {
+            case 'easy':
+                gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Łatwy`
+                break
+            case 'medium':
+                gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Średni`
+                break
+            default:
+                gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
+        }
+    }
+}
+
 const move = function (x = '500') {
     let time
     if (x == '500')
@@ -25,28 +145,41 @@ const move = function (x = '500') {
         scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
     }, time)
 }
-
-window.addEventListener('reload', (e) => {
-    e.style.overflow = "visible"
-})
-rowButton.addEventListener('click', move)
-playButtons.forEach((e) => {
-    e.addEventListener('click', move)
-    e.addEventListener('click', (e) => {
-        lvl = e.target.classList
-    })
-})
-playButtons.forEach((e) => {
-    e.addEventListener('click', (el) => {
-        playButtons.forEach((e) => {
-            e.classList.remove('on')
+const game = function () {
+    gameBlock.style.display = 'block'
+    playButtons.forEach((e) => {
+        e.addEventListener('click', el => {
+            playButtons.forEach(e => {
+                e.classList.remove('on')
+            })
+            el.target.classList.add('on')
         })
-        el.target.classList.add('on')
     })
-})
 
+    document.body.style.overflow = 'hidden'
+
+    playButtons.forEach((e) => {
+        if (e.classList.contains('on'))
+            lvl = [...e.classList][0]
+    })
+
+    gameMetods.addRemoveItems()
+    move()
+
+    const arr = gameMetods.createAB(lvl, numOfIterations)
+    a = arr[0]
+    b = arr[1]
+
+    score = gameMetods.createScore(lvl, numOfIterations)
+
+    gameMetods.createAnswers(score)
+
+    gameMetods.createSpanInfotextContent(lvl, numOfIterations)
+
+    gameMetods.createShowProgress(lvl, numOfIterations)
+}
 const endOfGame = function (uS) {
-       MainH3.classList.add('start')
+    MainH3.classList.add('start')
     MainH3.classList.remove('ingame')
     startGameButton.classList.add('start')
     startGameButton.classList.remove('ingame')
@@ -67,145 +200,32 @@ const endOfGame = function (uS) {
 }
 window.addEventListener('resize', () => {
     if (answersWrap.classList.contains('ingame')) {
-        console.log('Zmieniam!');
         move('one')
     }
 })
-const game = function () {
-       gameBlock.style.display = 'block'
-    clicked = false
-    playButtons.forEach((e) => {
-        e.addEventListener('click', (el) => {
-            playButtons.forEach((e) => {
-                e.classList.remove('on')
-            })
-            el.target.classList.add('on')
+window.addEventListener('reload', (e) => {
+    e.style.overflow = "visible"
+})
+rowButton.addEventListener('click', move)
+playButtons.forEach((e) => {
+    e.addEventListener('click', move)
+    e.addEventListener('click', (e) => {
+        lvl = e.target.classList
+    })
+})
+playButtons.forEach((e) => {
+    e.addEventListener('click', (el) => {
+        playButtons.forEach((e) => {
+            e.classList.remove('on')
         })
+        el.target.classList.add('on')
     })
-
-    document.body.style.overflow = 'hidden'
-
-    playButtons.forEach((e) => {
-        if (e.classList.contains('on'))
-            lvl = [...e.classList][0]
-    })
-    MainH3.classList.remove('start')
-    MainH3.classList.add('ingame')
-    startGameButton.classList.remove('start')
-    startGameButton.classList.add('ingame')
-    answersWrap.classList.remove('start')
-    answersWrap.classList.add('ingame')
-    XGame.classList.add('ingame')
-    XGame.classList.remove('start')
-    spanInfo.classList.add('ingame')
-    spanInfo.classList.remove('start')
-    gameProgress.classList.add('ingame')
-    gameProgress.classList.remove('start')
-    move()
-    used = ""
-    if (lvl == 'easy') {
-        a = Math.floor((Math.random() * 50))
-        b = Math.floor((Math.random() * 50))
-    } else if (lvl == 'medium' && numOfIterations < 7) {
-        a = Math.floor((Math.random() * 50) + 25)
-        b = Math.floor((Math.random() * 50) + 25)
-    } else if (lvl == 'medium' && numOfIterations >= 7) {
-        a = Math.floor((Math.random() * 13) + 5)
-        b = Math.floor((Math.random() * 13) + 5)
-    } else if (lvl == 'hard' && numOfIterations <= 5) {
-        a = Math.floor((Math.random() * 50) + 13)
-        b = Math.floor((Math.random() * 50) + 13)
-    } else if (lvl == 'hard' && numOfIterations <= 7) {
-        a = Math.floor((Math.random() * 14) + 12)
-        b = Math.floor((Math.random() * 14) + 12)
-    } else if (lvl == 'hard' && numOfIterations > 7) {
-        a = Math.floor((Math.random() * 5) + 1)
-        b = Math.floor((Math.random() * 5) + 1)
-    }
-
-
-    if (lvl == 'easy' && numOfIterations < 5)
-        score = a + b;
-    else if (lvl == 'easy' && numOfIterations >= 5)
-        score = Math.max(a, b) - Math.min(a, b)
-    else if (lvl == 'medium' && numOfIterations <= 3) {
-        score = a + b;
-    } else if (lvl == 'medium' && numOfIterations <= 6) {
-        score = Math.max(a, b) - Math.min(a, b)
-    } else if (lvl == 'medium' && numOfIterations >= 7) {
-        score = a * b;
-    } else if (lvl == 'hard' && numOfIterations <= 1) {
-        score = a + b
-    } else if (lvl == 'hard' && numOfIterations <= 4) {
-        score = Math.max(a, b) - Math.min(a, b)
-    } else if (lvl == 'hard' && numOfIterations <= 7) {
-        score = a * b;
-    } else if (lvl == 'hard' && numOfIterations > 7) {
-        score = a ** b
-    }
-
-    x = Math.floor((Math.random() * 4))
-    answerButtons[x].textContent = score;
-    used += x;
-    j = 0;
-    while (used.length != 4) {
-        x = Math.floor((Math.random() * 4))
-        if (used.includes(x) == false && answerButtons[j].textContent != "a") {
-            w = Math.floor(Math.random() * (1.2 * score - 0.8 * score) + 0.8 * score)
-            do {
-                doubled = false
-                answerButtons.forEach((e) => {
-                    if (e.textContent == w)
-                        doubled = true
-                })
-                if (doubled)
-                    w++
-            } while (doubled)
-            answerButtons[x].textContent = w
-            used += x;
-        }
-        j++
-        if (j == 4)
-            j = 0
-    }
-    if (lvl == 'easy' && numOfIterations < 5)
-        spanInfo.textContent = (`${a}+${b}=?`)
-    else if (lvl == 'easy' && numOfIterations >= 5)
-        spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
-    else if (lvl == 'medium' && numOfIterations <= 3)
-        spanInfo.textContent = (`${a}+${b}=?`)
-    else if (lvl == 'medium' && numOfIterations <= 6)
-        spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
-    else if (lvl == 'medium' && numOfIterations >= 7)
-        spanInfo.textContent = (`${a}*${b}=?`)
-    else if (lvl == 'hard' && numOfIterations <= 1) {
-        spanInfo.textContent = (`${a}+${b}=?`)
-    } else if (lvl == 'hard' && numOfIterations <= 4) {
-        spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
-    } else if (lvl == 'hard' && numOfIterations <= 7) {
-        spanInfo.textContent = (`${a}*${b}=?`)
-    } else if (lvl == 'hard' && numOfIterations > 7) {
-        spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
-    }
-
-    switch (lvl) {
-        case 'easy':
-            gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Łatwy`
-            break
-        case 'medium':
-            gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Średni`
-            break
-        default:
-            gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
-    }
-
-}
+})
 
 startGameButton.addEventListener('click', game)
 
-answerButtons.forEach((e) => {
-    e.addEventListener('click', (el) => {
-        clicked = true
+answerButtons.forEach(e => {
+    e.addEventListener('click', el => {
         numOfIterations++;
         if (el.target.textContent == score) {
             userScore++
@@ -226,9 +246,9 @@ answerButtons.forEach((e) => {
         }
         if (numOfIterations < 10)
             game()
-        else {
+        else
             endOfGame(userScore)
-        }
+
 
     })
 })
