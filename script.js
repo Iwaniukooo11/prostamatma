@@ -15,16 +15,17 @@ const alert = document.querySelector('div.alert')
 const gameProgress = document.querySelector('div.game-progress')
 const gameBlock = document.querySelector('.button-wrap-after')
 
-const move = function () {
+const move = function (x = '500') {
+    let time
+    if (x == '500')
+        time = 500
+    else if (x == 'one')
+        time = 1
     $('body,html').animate({
-        scrollTop: $('footer').offset().top - window.innerHeight
-    }, 500)
+        scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
+    }, time)
 }
-const moveBottom = function () {
-    $('html,body').animate({
-        scrollTop: document.body.scrollHeight
-    }, 2000);
-}
+
 window.addEventListener('reload', (e) => {
     e.style.overflow = "visible"
 })
@@ -45,7 +46,7 @@ playButtons.forEach((e) => {
 })
 
 const endOfGame = function (uS) {
-    MainH3.classList.add('start')
+       MainH3.classList.add('start')
     MainH3.classList.remove('ingame')
     startGameButton.classList.add('start')
     startGameButton.classList.remove('ingame')
@@ -64,11 +65,14 @@ const endOfGame = function (uS) {
     MainH3.classList.add('end')
     gameBlock.style.display = 'none'
 }
-
+window.addEventListener('resize', () => {
+    if (answersWrap.classList.contains('ingame')) {
+        console.log('Zmieniam!');
+        move('one')
+    }
+})
 const game = function () {
-    gameBlock.style.display = 'block'
-    console.log("NumOFIteration:" + numOfIterations)
-    console.log('score' + userScore)
+       gameBlock.style.display = 'block'
     clicked = false
     playButtons.forEach((e) => {
         e.addEventListener('click', (el) => {
@@ -78,9 +82,9 @@ const game = function () {
             el.target.classList.add('on')
         })
     })
-    move()
+
     document.body.style.overflow = 'hidden'
-    window.addEventListener('resize', move)
+
     playButtons.forEach((e) => {
         if (e.classList.contains('on'))
             lvl = [...e.classList][0]
@@ -97,7 +101,7 @@ const game = function () {
     spanInfo.classList.remove('start')
     gameProgress.classList.add('ingame')
     gameProgress.classList.remove('start')
-
+    move()
     used = ""
     if (lvl == 'easy') {
         a = Math.floor((Math.random() * 50))

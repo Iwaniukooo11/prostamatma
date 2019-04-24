@@ -72,6 +72,7 @@ span.orange {
     z-index: 2;
 }
 
+
 .header div.logo {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -254,6 +255,21 @@ div.wrap-game {
     -webkit-box-direction: normal;
     -ms-flex-direction: column;
     flex-direction: column;
+    -webkit-box-pack: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+
+div.wrap-game-inside {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-pack: distribute;
+    justify-content: space-around;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -ms-flex-direction: column;
+    flex-direction: column;
 }
 
 div.stop {
@@ -283,6 +299,7 @@ div.stop.ingame {
     -ms-flex-pack: distribute;
     justify-content: space-around;
     position: relative;
+    margin: 10px 0 20px;
 }
 
 .button-wrap-after {
@@ -300,7 +317,6 @@ div.stop.ingame {
     padding: 5px;
     font-size: 25px;
     font-weight: bold;
-    margin: 20px 0;
     background-color: #fff;
     border: none;
     border-radius: 3px;
@@ -315,10 +331,10 @@ div.stop.ingame {
 main {
     -webkit-box-flex: 1;
     -ms-flex-positive: 1;
-    flex-grow: 1;
+    height: 55vh;
     width: 80%;
     background-color: #fff;
-    margin: auto;
+    margin: 0 auto;
     padding: 5px;
     position: relative;
 }
@@ -492,6 +508,12 @@ span.game.ingame {
     border: none;
     border-radius: 10px;
     font-weight: bold;
+    transition: .2s;
+}
+
+.btnStart:hover {
+    background-color: var(--grey);
+    color: var(--orange);
 }
 
 .btnStart.ingame {
@@ -666,6 +688,10 @@ footer::after {
 @media(min-width:1000px) {
     section.about {
         padding: 27vh 40px 0;
+    }
+
+    section.about p {
+        max-width: 70%;
     }
 
     .h2 {
