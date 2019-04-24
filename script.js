@@ -134,19 +134,17 @@ const gameMetods = {
         }
     }
 }
-
-const move = function (x = '500') {
-    let time
-    if (x == '500')
-        time = 500
-    else if (x == 'one')
-        time = 1
+const move = (x = 500) => {
+    const time = x
     $('body,html').animate({
         scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
     }, time)
 }
-const game = function () {
+const game = () => {
     gameBlock.style.display = 'block'
+    gameMetods.addRemoveItems()
+    move()
+
     playButtons.forEach((e) => {
         e.addEventListener('click', el => {
             playButtons.forEach(e => {
@@ -157,28 +155,21 @@ const game = function () {
     })
 
     document.body.style.overflow = 'hidden'
-
     playButtons.forEach((e) => {
         if (e.classList.contains('on'))
             lvl = [...e.classList][0]
     })
-
-    gameMetods.addRemoveItems()
-    move()
 
     const arr = gameMetods.createAB(lvl, numOfIterations)
     a = arr[0]
     b = arr[1]
 
     score = gameMetods.createScore(lvl, numOfIterations)
-
     gameMetods.createAnswers(score)
-
     gameMetods.createSpanInfotextContent(lvl, numOfIterations)
-
     gameMetods.createShowProgress(lvl, numOfIterations)
 }
-const endOfGame = function (uS) {
+const endOfGame = (uS) => {
     MainH3.classList.add('start')
     MainH3.classList.remove('ingame')
     startGameButton.classList.add('start')
@@ -200,7 +191,7 @@ const endOfGame = function (uS) {
 }
 window.addEventListener('resize', () => {
     if (answersWrap.classList.contains('ingame')) {
-        move('one')
+        move(1)
     }
 })
 window.addEventListener('reload', (e) => {
@@ -213,9 +204,9 @@ playButtons.forEach((e) => {
         lvl = e.target.classList
     })
 })
-playButtons.forEach((e) => {
-    e.addEventListener('click', (el) => {
-        playButtons.forEach((e) => {
+playButtons.forEach(e => {
+    e.addEventListener('click', el => {
+        playButtons.forEach(e => {
             e.classList.remove('on')
         })
         el.target.classList.add('on')
@@ -248,8 +239,6 @@ answerButtons.forEach(e => {
             game()
         else
             endOfGame(userScore)
-
-
     })
 })
 
