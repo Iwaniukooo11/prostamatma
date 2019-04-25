@@ -1,10 +1,6 @@
-const main = document.querySelector('main')
 const rowButton = document.querySelector('button.row')
 const playButtons = document.querySelectorAll('button.btnG')
 const startGameButton = document.querySelector('button.btnStart')
-let numOfIterations = 0
-let lvl, userScore = 0
-let a, b, score, x, j, used, w, doubled
 const MainH3 = document.querySelector('h3.grey')
 const answersWrap = document.querySelector('div.answer-wrap')
 const XGame = document.querySelector('div.stop')
@@ -13,22 +9,64 @@ const spanInfo = document.querySelector('span.game')
 const alert = document.querySelector('div.alert')
 const gameProgress = document.querySelector('div.game-progress')
 const gameBlock = document.querySelector('.button-wrap-after')
+let numOfIterations = 0
+let lvl, userScore = 0
+let a, b, score
 
-const gameMetods = {
-    addRemoveItems() {
-        MainH3.classList.remove('start')
-        MainH3.classList.add('ingame')
-        startGameButton.classList.remove('start')
-        startGameButton.classList.add('ingame')
-        answersWrap.classList.remove('start')
-        answersWrap.classList.add('ingame')
-        XGame.classList.add('ingame')
-        XGame.classList.remove('start')
-        spanInfo.classList.add('ingame')
-        spanInfo.classList.remove('start')
-        gameProgress.classList.add('ingame')
-        gameProgress.classList.remove('start')
-    },
+class Game {
+    startGame() {
+        document.querySelectorAll('.start').forEach(e => {
+            e.classList.remove('start')
+            e.classList.add('ingame')
+        })
+    }
+    inGame() {
+        gameBlock.style.display = 'block'
+        gameMetods.startGame()
+        gameMetods.move()
+
+        playButtons.forEach((e) => {
+            e.addEventListener('click', el => {
+                playButtons.forEach(e => {
+                    e.classList.remove('on')
+                })
+                el.target.classList.add('on')
+            })
+        })
+
+        document.body.style.overflow = 'hidden'
+        playButtons.forEach((e) => {
+            if (e.classList.contains('on'))
+                lvl = [...e.classList][0]
+        })
+
+        const arr = gameMetods.createAB(lvl, numOfIterations)
+        a = arr[0]
+        b = arr[1]
+
+        score = gameMetods.createScore(lvl, numOfIterations)
+        gameMetods.createAnswers(score)
+        gameMetods.createSpanInfotextContent(lvl, numOfIterations)
+        gameMetods.createShowProgress(lvl, numOfIterations)
+    }
+    endGame(userScore) {
+        document.querySelectorAll('.ingame').forEach(e => {
+            e.classList.remove('ingame')
+            e.classList.add('start')
+        })
+        userScore = 0
+        numOfIterations = 0
+        document.body.style.overflow = 'visible'
+        MainH3.innerHTML = `Twoja ilośc punktów: ${userScore}/10 <br> Zagraj jeszcze raz!`
+        MainH3.classList.add('end')
+        gameBlock.style.display = 'none'
+    }
+    move(x = 500) {
+        const time = x
+        $('body,html').animate({
+            scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
+        }, time)
+    }
     createAB(lvl, numOfIterations) {
         if (lvl == 'easy') {
             a = Math.floor((Math.random() * 50))
@@ -50,7 +88,7 @@ const gameMetods = {
             b = Math.floor((Math.random() * 5) + 1)
         }
         return [a, b]
-    },
+    }
     createScore(lvl, numOfIterations) {
         if (lvl == 'easy' && numOfIterations < 5)
             score = a + b;
@@ -72,34 +110,36 @@ const gameMetods = {
             score = a ** b
         }
         return score
-    },
+    }
     createAnswers(score) {
-        used = ""
-        x = Math.floor((Math.random() * 4))
-        answerButtons[x].textContent = score;
-        used += x;
-        j = 0;
-        while (used.length != 4) {
-            x = Math.floor((Math.random() * 4))
-            if (used.includes(x) == false && answerButtons[j].textContent != "a") {
-                w = Math.floor(Math.random() * (1.2 * score - 0.8 * score) + 0.8 * score)
+        let usedIndexOFButtons = ""
+        let randomIndex = Math.floor((Math.random() * 4))
+        answerButtons[randomIndex].textContent = score;
+        usedIndexOFButtons += randomIndex;
+        let j = 0;
+        let doubled = false
+
+        while (usedIndexOFButtons.length != 4) {
+            randomIndex = Math.floor((Math.random() * 4))
+            if (usedIndexOFButtons.includes(randomIndex) == false && answerButtons[j].textContent != "a") {
+                let badAnswer = Math.floor(Math.random() * (1.2 * score - 0.8 * score) + 0.8 * score)
                 do {
                     doubled = false
-                    answerButtons.forEach((e) => {
-                        if (e.textContent == w)
+                    answerButtons.forEach(e => {
+                        if (e.textContent == badAnswer)
                             doubled = true
                     })
                     if (doubled)
-                        w++
+                        badAnswer++
                 } while (doubled)
-                answerButtons[x].textContent = w
-                used += x;
+                answerButtons[randomIndex].textContent = badAnswer
+                usedIndexOFButtons += randomIndex;
             }
             j++
             if (j == 4)
                 j = 0
         }
-    },
+    }
     createSpanInfotextContent(lvl, numOfIterations) {
         if (lvl == 'easy' && numOfIterations < 5)
             spanInfo.textContent = (`${a}+${b}=?`)
@@ -120,7 +160,7 @@ const gameMetods = {
         } else if (lvl == 'hard' && numOfIterations > 7) {
             spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
         }
-    },
+    }
     createShowProgress(lvl, numOfIterations) {
         switch (lvl) {
             case 'easy':
@@ -134,61 +174,8 @@ const gameMetods = {
         }
     }
 }
-const move = (x = 500) => {
-    const time = x
-    $('body,html').animate({
-        scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
-    }, time)
-}
-const game = () => {
-    gameBlock.style.display = 'block'
-    gameMetods.addRemoveItems()
-    move()
+const gameMetods = new Game()
 
-    playButtons.forEach((e) => {
-        e.addEventListener('click', el => {
-            playButtons.forEach(e => {
-                e.classList.remove('on')
-            })
-            el.target.classList.add('on')
-        })
-    })
-
-    document.body.style.overflow = 'hidden'
-    playButtons.forEach((e) => {
-        if (e.classList.contains('on'))
-            lvl = [...e.classList][0]
-    })
-
-    const arr = gameMetods.createAB(lvl, numOfIterations)
-    a = arr[0]
-    b = arr[1]
-
-    score = gameMetods.createScore(lvl, numOfIterations)
-    gameMetods.createAnswers(score)
-    gameMetods.createSpanInfotextContent(lvl, numOfIterations)
-    gameMetods.createShowProgress(lvl, numOfIterations)
-}
-const endOfGame = (uS) => {
-    MainH3.classList.add('start')
-    MainH3.classList.remove('ingame')
-    startGameButton.classList.add('start')
-    startGameButton.classList.remove('ingame')
-    answersWrap.classList.add('start')
-    answersWrap.classList.remove('ingame')
-    XGame.classList.add('start')
-    XGame.classList.remove('ingame')
-    spanInfo.classList.remove('ingame')
-    spanInfo.classList.add('start')
-    gameProgress.classList.remove('ingame')
-    gameProgress.classList.add('start')
-    userScore = 0
-    numOfIterations = 0
-    document.body.style.overflow = 'visible'
-    MainH3.innerHTML = `Twoja ilośc punktów: ${uS}/10 <br> Zagraj jeszcze raz!`
-    MainH3.classList.add('end')
-    gameBlock.style.display = 'none'
-}
 window.addEventListener('resize', () => {
     if (answersWrap.classList.contains('ingame')) {
         move(1)
@@ -197,10 +184,12 @@ window.addEventListener('resize', () => {
 window.addEventListener('reload', (e) => {
     e.style.overflow = "visible"
 })
-rowButton.addEventListener('click', move)
+
+rowButton.addEventListener('click', gameMetods.move)
+
 playButtons.forEach((e) => {
-    e.addEventListener('click', move)
-    e.addEventListener('click', (e) => {
+    e.addEventListener('click', gameMetods.move)
+    e.addEventListener('click', e => {
         lvl = e.target.classList
     })
 })
@@ -212,9 +201,6 @@ playButtons.forEach(e => {
         el.target.classList.add('on')
     })
 })
-
-startGameButton.addEventListener('click', game)
-
 answerButtons.forEach(e => {
     e.addEventListener('click', el => {
         numOfIterations++;
@@ -236,12 +222,14 @@ answerButtons.forEach(e => {
             }, 750)
         }
         if (numOfIterations < 10)
-            game()
+            gameMetods.inGame()
         else
-            endOfGame(userScore)
+            gameMetods.endGame(userScore)
     })
 })
 
+startGameButton.addEventListener('click', gameMetods.inGame)
+
 XGame.addEventListener('click', () => {
-    endOfGame(userScore)
+    gameMetods.endGame(userScore)
 })
