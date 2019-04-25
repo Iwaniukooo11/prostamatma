@@ -54,12 +54,12 @@ class Game {
             e.classList.remove('ingame')
             e.classList.add('start')
         })
-        userScore = 0
         numOfIterations = 0
         document.body.style.overflow = 'visible'
         MainH3.innerHTML = `Twoja ilośc punktów: ${userScore}/10 <br> Zagraj jeszcze raz!`
         MainH3.classList.add('end')
         gameBlock.style.display = 'none'
+        userScore = 0
     }
     move(x = 500) {
         const time = x
@@ -178,7 +178,7 @@ const gameMetods = new Game()
 
 window.addEventListener('resize', () => {
     if (answersWrap.classList.contains('ingame')) {
-        move(1)
+        gameMetods.move(1)
     }
 })
 window.addEventListener('reload', (e) => {
