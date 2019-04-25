@@ -40,7 +40,7 @@ class Game {
                 lvl = [...e.classList][0]
         })
 
-        const arr = gameMetods.createAB(lvl, numOfIterations)
+        const arr = gameMetods.createExcersiseValues(lvl, numOfIterations)
         a = arr[0]
         b = arr[1]
 
@@ -49,14 +49,14 @@ class Game {
         gameMetods.createSpanInfotextContent(lvl, numOfIterations)
         gameMetods.createShowProgress(lvl, numOfIterations)
     }
-    endGame(userScore) {
+    endGame(user_Score) {
         document.querySelectorAll('.ingame').forEach(e => {
             e.classList.remove('ingame')
             e.classList.add('start')
         })
         numOfIterations = 0
         document.body.style.overflow = 'visible'
-        MainH3.innerHTML = `Twoja ilośc punktów: ${userScore}/10 <br> Zagraj jeszcze raz!`
+        MainH3.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
         MainH3.classList.add('end')
         gameBlock.style.display = 'none'
         userScore = 0
@@ -67,7 +67,7 @@ class Game {
             scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
         }, time)
     }
-    createAB(lvl, numOfIterations) {
+    createExcersiseValues(lvl, numOfIterations) {
         if (lvl == 'easy') {
             a = Math.floor((Math.random() * 50))
             b = Math.floor((Math.random() * 50))
@@ -116,12 +116,11 @@ class Game {
         let randomIndex = Math.floor((Math.random() * 4))
         answerButtons[randomIndex].textContent = score;
         usedIndexOFButtons += randomIndex;
-        let j = 0;
         let doubled = false
 
         while (usedIndexOFButtons.length != 4) {
             randomIndex = Math.floor((Math.random() * 4))
-            if (usedIndexOFButtons.includes(randomIndex) == false && answerButtons[j].textContent != "a") {
+            if (usedIndexOFButtons.includes(randomIndex) == false) {
                 let badAnswer = Math.floor(Math.random() * (1.2 * score - 0.8 * score) + 0.8 * score)
                 do {
                     doubled = false
@@ -135,9 +134,6 @@ class Game {
                 answerButtons[randomIndex].textContent = badAnswer
                 usedIndexOFButtons += randomIndex;
             }
-            j++
-            if (j == 4)
-                j = 0
         }
     }
     createSpanInfotextContent(lvl, numOfIterations) {
