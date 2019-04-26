@@ -15,13 +15,13 @@ let a, b, score
 
 class Game {
     startGame() {
-        gameMetods.toggleClass(document.querySelectorAll('.start'), 'start', 'ingame')
+        this.toggleClass(document.querySelectorAll('.start'), 'start', 'ingame')
     }
     inGame() {
-        gameMetods.changeInlineStyle(gameBlock, 'display', 'block')
-        gameMetods.changeInlineStyle(document.body, 'overflow', 'hidden')
-        gameMetods.startGame()
-        gameMetods.move()
+        gameMethod.changeInlineStyle(gameBlock, 'display', 'block')//this doesen't work
+        gameMethod.changeInlineStyle(document.body, 'overflow', 'hidden')//this doesen't work
+        gameMethod.startGame()//this doesen't work
+        gameMethod.move()//this doesen't work
 
         playButtons.forEach(e => {
             e.addEventListener('click', el => {
@@ -37,20 +37,20 @@ class Game {
                 lvl = [...e.classList][0]
         })
 
-        const arr = gameMetods.createExcersiseValues(lvl, numOfIterations)
+        const arr = gameMethod.createExcersiseValues(lvl, numOfIterations)
         a = arr[0]
         b = arr[1]
 
-        score = gameMetods.createScore(lvl, numOfIterations)
-        gameMetods.createAnswers(score)
-        gameMetods.createSpanInfotextContent(lvl, numOfIterations)
+        score = gameMethod.createScore(lvl, numOfIterations)//this doesen't work
+        gameMethod.createAnswers(score)//this doesen't work
+        gameMethod.createSpanInfotextContent(lvl, numOfIterations)//this doesen't work
 
-        gameMetods.createShowProgress(lvl, numOfIterations)
+        gameMethod.createShowProgress(lvl, numOfIterations)//this doesen't work
     }
     endGame(user_Score) {
-        gameMetods.toggleClass(document.querySelectorAll('.ingame'), 'ingame', 'start')
-        gameMetods.changeInlineStyle(document.body, 'overflow', 'visible')
-        gameMetods.changeInlineStyle(gameBlock, 'display', 'none')
+        this.toggleClass(document.querySelectorAll('.ingame'), 'ingame', 'start')
+        this.changeInlineStyle(document.body, 'overflow', 'visible')
+        this.changeInlineStyle(gameBlock, 'display', 'none')
         MainH3.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
         MainH3.classList.add('end')
         this.resetScoreAndNumIteration()
@@ -177,19 +177,19 @@ class Game {
         }
     }
 } //<--End of Game class
-const gameMetods = new Game()
+const gameMethod = new Game()
 
 window.addEventListener('resize', () => {
     if (answersWrap.classList.contains('ingame')) {
-        gameMetods.move(1)
+        gameMethod.move(1)
     }
 })
-window.addEventListener('reload', e => this.changeInlineStyle(e, 'overflow', 'hidden'))
+window.addEventListener('reload', e => gameMethod.changeInlineStyle(e, 'overflow', 'hidden'))
 
-rowButton.addEventListener('click', gameMetods.move)
+rowButton.addEventListener('click', gameMethod.move)
 
 playButtons.forEach((e) => {
-    e.addEventListener('click', gameMetods.move)
+    e.addEventListener('click', this.move)
     e.addEventListener('click', e => {
         lvl = e.target.classList
     })
@@ -223,14 +223,14 @@ answerButtons.forEach(e => {
             }, 750)
         }
         if (numOfIterations < 10)
-            gameMetods.inGame()
+            gameMethod.inGame()
         else
-            gameMetods.endGame(userScore)
+            gameMethod.endGame(userScore)
     })
 })
 
-startGameButton.addEventListener('click', gameMetods.inGame)
+startGameButton.addEventListener('click', gameMethod.inGame)
 
 XGame.addEventListener('click', () => {
-    gameMetods.endGame(userScore)
+    gameMethod.endGame(userScore)
 })
