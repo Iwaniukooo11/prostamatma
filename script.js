@@ -15,17 +15,15 @@ let a, b, score
 
 class Game {
     startGame() {
-        document.querySelectorAll('.start').forEach(e => {
-            e.classList.remove('start')
-            e.classList.add('ingame')
-        })
+        gameMetods.toggleClass(document.querySelectorAll('.start'), 'start', 'ingame')
     }
     inGame() {
-        gameBlock.style.display = 'block'
+        gameMetods.changeInlineStyle(gameBlock, 'display', 'block')
+        gameMetods.changeInlineStyle(document.body, 'overflow', 'hidden')
         gameMetods.startGame()
         gameMetods.move()
 
-        playButtons.forEach((e) => {
+        playButtons.forEach(e => {
             e.addEventListener('click', el => {
                 playButtons.forEach(e => {
                     e.classList.remove('on')
@@ -34,8 +32,7 @@ class Game {
             })
         })
 
-        document.body.style.overflow = 'hidden'
-        playButtons.forEach((e) => {
+        playButtons.forEach(e => {
             if (e.classList.contains('on'))
                 lvl = [...e.classList][0]
         })
@@ -47,19 +44,29 @@ class Game {
         score = gameMetods.createScore(lvl, numOfIterations)
         gameMetods.createAnswers(score)
         gameMetods.createSpanInfotextContent(lvl, numOfIterations)
+
         gameMetods.createShowProgress(lvl, numOfIterations)
     }
     endGame(user_Score) {
-        document.querySelectorAll('.ingame').forEach(e => {
-            e.classList.remove('ingame')
-            e.classList.add('start')
-        })
-        numOfIterations = 0
-        document.body.style.overflow = 'visible'
+        gameMetods.toggleClass(document.querySelectorAll('.ingame'), 'ingame', 'start')
+        gameMetods.changeInlineStyle(document.body, 'overflow', 'visible')
+        gameMetods.changeInlineStyle(gameBlock, 'display', 'none')
         MainH3.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
         MainH3.classList.add('end')
-        gameBlock.style.display = 'none'
+        this.resetScoreAndNumIteration()
+    }
+    toggleClass(obj, toRemove, toAdd) {
+        obj.forEach(e => {
+            e.classList.remove(toRemove)
+            e.classList.add(toAdd)
+        })
+    }
+    changeInlineStyle(element, property, value) {
+        element.style[property] = value
+    }
+    resetScoreAndNumIteration() {
         userScore = 0
+        numOfIterations = 0
     }
     move(x = 500) {
         const time = x
@@ -157,19 +164,19 @@ class Game {
             spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
         }
     }
-    createShowProgress(lvl, numOfIterations) {
-        switch (lvl) {
+    createShowProgress(_lvl, numOfIterations) {
+        switch (_lvl) {
             case 'easy':
                 gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Łatwy`
                 break
             case 'medium':
-                gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Średni`
+                gameProgress.innerHTML = `${numOfIterations* + 1}/10<br>Poziom: Średni`
                 break
             default:
                 gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
         }
     }
-}
+} //<--End of Game class
 const gameMetods = new Game()
 
 window.addEventListener('resize', () => {
@@ -177,9 +184,7 @@ window.addEventListener('resize', () => {
         gameMetods.move(1)
     }
 })
-window.addEventListener('reload', (e) => {
-    e.style.overflow = "visible"
-})
+window.addEventListener('reload', e => this.changeInlineStyle(e, 'overflow', 'hidden'))
 
 rowButton.addEventListener('click', gameMetods.move)
 
