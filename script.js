@@ -1,114 +1,110 @@
-const rowButton = document.querySelector('button.row')
-const playButtons = document.querySelectorAll('button.btnG')
-const startGameButton = document.querySelector('button.btnStart')
-const MainH3 = document.querySelector('h3.grey')
-const answersWrap = document.querySelector('div.answer-wrap')
-const XGame = document.querySelector('div.stop')
-const answerButtons = document.querySelectorAll('button.answer')
-const spanInfo = document.querySelector('span.game')
-const alert = document.querySelector('div.alert')
-const gameProgress = document.querySelector('div.game-progress')
-const gameBlock = document.querySelector('.button-wrap-after')
-let numOfIterations = 0
-let lvl, userScore = 0
-let a, b, score
-
 class Game {
     constructor() {
+        this.rowButton = document.querySelector('button.row')
+        this.playButtons = document.querySelectorAll('button.btnG')
+        this.startGameButton = document.querySelector('button.btnStart')
+        this.MainH3 = document.querySelector('h3.grey')
+        this.answersWrap = document.querySelector('div.answer-wrap')
+        this.XGame = document.querySelector('div.stop')
+        this.answerButtons = document.querySelectorAll('button.answer')
+        this.spanInfo = document.querySelector('span.game')
+        this.alert = document.querySelector('div.alert')
+        this.gameProgress = document.querySelector('div.game-progress')
+        this.gameBlock = document.querySelector('.button-wrap-after')
+        this.numOfIterations = 0
+        this.lvl
+        this.userScore = 0
+        this.a
+        this.b
+        this.score
+    
         window.addEventListener('resize', () => {
-            if (answersWrap.classList.contains('ingame')) {
+            if (this.answersWrap.classList.contains('ingame')) {
                 this.move(1)
             }
         })
         window.addEventListener('reload', e => this.changeInlineStyle(e, 'overflow', 'hidden'))
-
-        rowButton.addEventListener('click', this.move)
-
-        playButtons.forEach((e) => {
+        this.rowButton.addEventListener('click', this.move)
+        this.playButtons.forEach(e => {
             e.addEventListener('click', this.move)
             e.addEventListener('click', e => {
-                lvl = e.target.classList
+                this.lvl = e.target.classList
             })
         })
-        playButtons.forEach(e => {
+        this.playButtons.forEach(e => {
             e.addEventListener('click', el => {
-                playButtons.forEach(e => {
+                this.playButtons.forEach(e => {
                     e.classList.remove('on')
                 })
                 el.target.classList.add('on')
             })
         })
-        answerButtons.forEach(e => {
+        this.answerButtons.forEach(e => {
             e.addEventListener('click', el => {
-                numOfIterations++;
-                if (el.target.textContent == score) {
-                    userScore++
-                    alert.classList.add('true')
-                    alert.style.animation = 'alert .75s linear both'
+                this.numOfIterations++;
+                if (el.target.textContent == this.score) {
+                    this.userScore++
+                    this.alert.classList.add('true')
+                    this.changeInlineStyle(this.alert, 'animation', 'alert .75s linear both')
                     window.setTimeout(() => {
-                        alert.classList.remove('true')
-                        alert.style.animation = ''
+                        this.alert.classList.remove('true')
+                        this.changeInlineStyle(this.alert, 'animation', '')
                     }, 750)
-
-                } else if (el.target.textContent != score) {
-                    alert.classList.add('false')
-                    alert.style.animation = 'alert .75s linear both'
+                } else if (el.target.textContent != this.score) {
+                    this.alert.classList.add('false')
+                    this.alert.style.animation = 'alert .75s linear both'
                     window.setTimeout(() => {
-                        alert.classList.remove('false')
-                        alert.style.animation = ''
+                        this.alert.classList.remove('false')
+                        this.alert.style.animation = ''
                     }, 750)
                 }
-                if (numOfIterations < 10)
+                if (this.numOfIterations < 10)
                     this.inGame()
                 else
-                    this.endGame(userScore)
+                    this.endGame(this.userScore)
             })
         })
-
-        startGameButton.addEventListener('click', this.inGame.bind(this))
-
-        XGame.addEventListener('click', () => {
-            this.endGame(userScore)
-        })
+        this.startGameButton.addEventListener('click', this.inGame.bind(this))
+        this.XGame.addEventListener('click', () => this.endGame(this.userScore))
     }
 
     startGame() {
         this.toggleClass(document.querySelectorAll('.start'), 'start', 'ingame')
     }
     inGame() {
-        this.changeInlineStyle(gameBlock, 'display', 'block')
+        this.changeInlineStyle(this.gameBlock, 'display', 'block')
         this.changeInlineStyle(document.body, 'overflow', 'hidden')
         this.startGame()
         this.move()
-        playButtons.forEach(e => {
+        this.playButtons.forEach(e => {
             e.addEventListener('click', el => {
-                playButtons.forEach(e => {
+                this.playButtons.forEach(e => {
                     e.classList.remove('on')
                 })
                 el.target.classList.add('on')
             })
         })
 
-        playButtons.forEach(e => {
+        this.playButtons.forEach(e => {
             if (e.classList.contains('on'))
-                lvl = [...e.classList][0]
+                this.lvl = [...e.classList][0]
         })
 
-        const arr = this.createExcersiseValues(lvl, numOfIterations)
-        a = arr[0]
-        b = arr[1]
+        this.arr = this.createExcersiseValues(this.lvl, this.numOfIterations)
+        this.a = this.arr[0]
+        this.b = this.arr[1]
 
-        score = this.createScore(lvl, numOfIterations)
-        this.createAnswers(score)
-        this.createSpanInfotextContent(lvl, numOfIterations) 
-        this.createShowProgress(lvl, numOfIterations)
+        this.score = this.createScore(this.lvl, this.numOfIterations, this.a, this.b)
+        this.createAnswers(this.score)
+        this.createSpanInfotextContent(this.lvl, this.numOfIterations, this.a, this.b)
+        this.createShowProgress(this.lvl, this.numOfIterations)
     }
     endGame(user_Score) {
         this.toggleClass(document.querySelectorAll('.ingame'), 'ingame', 'start')
         this.changeInlineStyle(document.body, 'overflow', 'visible')
-        this.changeInlineStyle(gameBlock, 'display', 'none')
-        MainH3.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
-        MainH3.classList.add('end')
+        this.changeInlineStyle(this.gameBlock, 'display', 'none')
+        this.MainH3.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
+        this.MainH3.classList.add('end')
         this.resetScoreAndNumIteration()
     }
     toggleClass(obj, toRemove, toAdd) {
@@ -121,8 +117,8 @@ class Game {
         element.style[property] = value
     }
     resetScoreAndNumIteration() {
-        userScore = 0
-        numOfIterations = 0
+        this.userScore = 0
+        this.numOfIterations = 0
     }
     move(x = 500) {
         const time = x
@@ -132,52 +128,52 @@ class Game {
     }
     createExcersiseValues(lvl, numOfIterations) {
         if (lvl == 'easy') {
-            a = Math.floor((Math.random() * 50))
-            b = Math.floor((Math.random() * 50))
+            this.a = Math.floor((Math.random() * 50))
+            this.b = Math.floor((Math.random() * 50))
         } else if (lvl == 'medium' && numOfIterations < 7) {
-            a = Math.floor((Math.random() * 50) + 25)
-            b = Math.floor((Math.random() * 50) + 25)
+            this.a = Math.floor((Math.random() * 50) + 25)
+            this.b = Math.floor((Math.random() * 50) + 25)
         } else if (lvl == 'medium' && numOfIterations >= 7) {
-            a = Math.floor((Math.random() * 13) + 5)
-            b = Math.floor((Math.random() * 13) + 5)
+            this.a = Math.floor((Math.random() * 13) + 5)
+            this.b = Math.floor((Math.random() * 13) + 5)
         } else if (lvl == 'hard' && numOfIterations <= 5) {
-            a = Math.floor((Math.random() * 50) + 13)
-            b = Math.floor((Math.random() * 50) + 13)
+            this.a = Math.floor((Math.random() * 50) + 13)
+            this.b = Math.floor((Math.random() * 50) + 13)
         } else if (lvl == 'hard' && numOfIterations <= 7) {
-            a = Math.floor((Math.random() * 14) + 12)
-            b = Math.floor((Math.random() * 14) + 12)
+            this.a = Math.floor((Math.random() * 14) + 12)
+            this.b = Math.floor((Math.random() * 14) + 12)
         } else if (lvl == 'hard' && numOfIterations > 7) {
-            a = Math.floor((Math.random() * 5) + 1)
-            b = Math.floor((Math.random() * 5) + 1)
+            this.a = Math.floor((Math.random() * 5) + 1)
+            this.b = Math.floor((Math.random() * 5) + 1)
         }
-        return [a, b]
+        return [this.a, this.b]
     }
-    createScore(lvl, numOfIterations) {
+    createScore(lvl, numOfIterations, a, b) {
         if (lvl == 'easy' && numOfIterations < 5)
-            score = a + b;
+            this.score = a + b;
         else if (lvl == 'easy' && numOfIterations >= 5)
-            score = Math.max(a, b) - Math.min(a, b)
+            this.score = Math.max(a, b) - Math.min(a, b)
         else if (lvl == 'medium' && numOfIterations <= 3) {
-            score = a + b;
+            this.score = a + b;
         } else if (lvl == 'medium' && numOfIterations <= 6) {
-            score = Math.max(a, b) - Math.min(a, b)
+            this.score = Math.max(a, b) - Math.min(a, b)
         } else if (lvl == 'medium' && numOfIterations >= 7) {
-            score = a * b;
+            this.score = a * b;
         } else if (lvl == 'hard' && numOfIterations <= 1) {
-            score = a + b
+            this.score = a + b
         } else if (lvl == 'hard' && numOfIterations <= 4) {
-            score = Math.max(a, b) - Math.min(a, b)
+            this.score = Math.max(a, b) - Math.min(a, b)
         } else if (lvl == 'hard' && numOfIterations <= 7) {
-            score = a * b;
+            this.score = a * b;
         } else if (lvl == 'hard' && numOfIterations > 7) {
-            score = a ** b
+            this.score = a ** b
         }
-        return score
+        return this.score
     }
     createAnswers(score) {
         let usedIndexOFButtons = ""
         let randomIndex = Math.floor((Math.random() * 4))
-        answerButtons[randomIndex].textContent = score;
+        this.answerButtons[randomIndex].textContent = score;
         usedIndexOFButtons += randomIndex;
         let doubled = false
 
@@ -187,51 +183,51 @@ class Game {
                 let badAnswer = Math.floor(Math.random() * (1.2 * score - 0.8 * score) + 0.8 * score)
                 do {
                     doubled = false
-                    answerButtons.forEach(e => {
+                    this.answerButtons.forEach(e => {
                         if (e.textContent == badAnswer)
                             doubled = true
                     })
                     if (doubled)
                         badAnswer++
                 } while (doubled)
-                answerButtons[randomIndex].textContent = badAnswer
+                this.answerButtons[randomIndex].textContent = badAnswer
                 usedIndexOFButtons += randomIndex;
             }
         }
     }
-    createSpanInfotextContent(lvl, numOfIterations) {
+    createSpanInfotextContent(lvl, numOfIterations, a, b) {
         if (lvl == 'easy' && numOfIterations < 5)
-            spanInfo.textContent = (`${a}+${b}=?`)
+            this.spanInfo.textContent = (`${a}+${b}=?`)
         else if (lvl == 'easy' && numOfIterations >= 5)
-            spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+            this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
         else if (lvl == 'medium' && numOfIterations <= 3)
-            spanInfo.textContent = (`${a}+${b}=?`)
+            this.spanInfo.textContent = (`${a}+${b}=?`)
         else if (lvl == 'medium' && numOfIterations <= 6)
-            spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+            this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
         else if (lvl == 'medium' && numOfIterations >= 7)
-            spanInfo.textContent = (`${a}*${b}=?`)
+            this.spanInfo.textContent = (`${a}*${b}=?`)
         else if (lvl == 'hard' && numOfIterations <= 1) {
-            spanInfo.textContent = (`${a}+${b}=?`)
+            this.spanInfo.textContent = (`${a}+${b}=?`)
         } else if (lvl == 'hard' && numOfIterations <= 4) {
-            spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+            this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
         } else if (lvl == 'hard' && numOfIterations <= 7) {
-            spanInfo.textContent = (`${a}*${b}=?`)
+            this.spanInfo.textContent = (`${a}*${b}=?`)
         } else if (lvl == 'hard' && numOfIterations > 7) {
-            spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
+            this.spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
         }
     }
     createShowProgress(_lvl, numOfIterations) {
         switch (_lvl) {
             case 'easy':
-                gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Łatwy`
+                this.gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Łatwy`
                 break
             case 'medium':
-                gameProgress.innerHTML = `${numOfIterations* + 1}/10<br>Poziom: Średni`
+                this.gameProgress.innerHTML = `${numOfIterations* + 1}/10<br>Poziom: Średni`
                 break
             default:
-                gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
+                this.gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
         }
     }
 
-} //<--End of Game class
+}
 const gameMethod = new Game()
