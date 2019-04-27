@@ -14,15 +14,72 @@ let lvl, userScore = 0
 let a, b, score
 
 class Game {
+    constructor() {
+        window.addEventListener('resize', () => {
+            if (answersWrap.classList.contains('ingame')) {
+                this.move(1)
+            }
+        })
+        window.addEventListener('reload', e => this.changeInlineStyle(e, 'overflow', 'hidden'))
+
+        rowButton.addEventListener('click', this.move)
+
+        playButtons.forEach((e) => {
+            e.addEventListener('click', this.move)
+            e.addEventListener('click', e => {
+                lvl = e.target.classList
+            })
+        })
+        playButtons.forEach(e => {
+            e.addEventListener('click', el => {
+                playButtons.forEach(e => {
+                    e.classList.remove('on')
+                })
+                el.target.classList.add('on')
+            })
+        })
+        answerButtons.forEach(e => {
+            e.addEventListener('click', el => {
+                numOfIterations++;
+                if (el.target.textContent == score) {
+                    userScore++
+                    alert.classList.add('true')
+                    alert.style.animation = 'alert .75s linear both'
+                    window.setTimeout(() => {
+                        alert.classList.remove('true')
+                        alert.style.animation = ''
+                    }, 750)
+
+                } else if (el.target.textContent != score) {
+                    alert.classList.add('false')
+                    alert.style.animation = 'alert .75s linear both'
+                    window.setTimeout(() => {
+                        alert.classList.remove('false')
+                        alert.style.animation = ''
+                    }, 750)
+                }
+                if (numOfIterations < 10)
+                    this.inGame()
+                else
+                    this.endGame(userScore)
+            })
+        })
+
+        startGameButton.addEventListener('click', this.inGame.bind(this))
+
+        XGame.addEventListener('click', () => {
+            this.endGame(userScore)
+        })
+    }
+
     startGame() {
         this.toggleClass(document.querySelectorAll('.start'), 'start', 'ingame')
     }
     inGame() {
-        gameMethod.changeInlineStyle(gameBlock, 'display', 'block')//this doesen't work
-        gameMethod.changeInlineStyle(document.body, 'overflow', 'hidden')//this doesen't work
-        gameMethod.startGame()//this doesen't work
-        gameMethod.move()//this doesen't work
-
+        this.changeInlineStyle(gameBlock, 'display', 'block')
+        this.changeInlineStyle(document.body, 'overflow', 'hidden')
+        this.startGame()
+        this.move()
         playButtons.forEach(e => {
             e.addEventListener('click', el => {
                 playButtons.forEach(e => {
@@ -37,15 +94,14 @@ class Game {
                 lvl = [...e.classList][0]
         })
 
-        const arr = gameMethod.createExcersiseValues(lvl, numOfIterations)
+        const arr = this.createExcersiseValues(lvl, numOfIterations)
         a = arr[0]
         b = arr[1]
 
-        score = gameMethod.createScore(lvl, numOfIterations)//this doesen't work
-        gameMethod.createAnswers(score)//this doesen't work
-        gameMethod.createSpanInfotextContent(lvl, numOfIterations)//this doesen't work
-
-        gameMethod.createShowProgress(lvl, numOfIterations)//this doesen't work
+        score = this.createScore(lvl, numOfIterations)
+        this.createAnswers(score)
+        this.createSpanInfotextContent(lvl, numOfIterations) 
+        this.createShowProgress(lvl, numOfIterations)
     }
     endGame(user_Score) {
         this.toggleClass(document.querySelectorAll('.ingame'), 'ingame', 'start')
@@ -176,61 +232,6 @@ class Game {
                 gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
         }
     }
+
 } //<--End of Game class
 const gameMethod = new Game()
-
-window.addEventListener('resize', () => {
-    if (answersWrap.classList.contains('ingame')) {
-        gameMethod.move(1)
-    }
-})
-window.addEventListener('reload', e => gameMethod.changeInlineStyle(e, 'overflow', 'hidden'))
-
-rowButton.addEventListener('click', gameMethod.move)
-
-playButtons.forEach((e) => {
-    e.addEventListener('click', this.move)
-    e.addEventListener('click', e => {
-        lvl = e.target.classList
-    })
-})
-playButtons.forEach(e => {
-    e.addEventListener('click', el => {
-        playButtons.forEach(e => {
-            e.classList.remove('on')
-        })
-        el.target.classList.add('on')
-    })
-})
-answerButtons.forEach(e => {
-    e.addEventListener('click', el => {
-        numOfIterations++;
-        if (el.target.textContent == score) {
-            userScore++
-            alert.classList.add('true')
-            alert.style.animation = 'alert .75s linear both'
-            window.setTimeout(() => {
-                alert.classList.remove('true')
-                alert.style.animation = ''
-            }, 750)
-
-        } else if (el.target.textContent != score) {
-            alert.classList.add('false')
-            alert.style.animation = 'alert .75s linear both'
-            window.setTimeout(() => {
-                alert.classList.remove('false')
-                alert.style.animation = ''
-            }, 750)
-        }
-        if (numOfIterations < 10)
-            gameMethod.inGame()
-        else
-            gameMethod.endGame(userScore)
-    })
-})
-
-startGameButton.addEventListener('click', gameMethod.inGame)
-
-XGame.addEventListener('click', () => {
-    gameMethod.endGame(userScore)
-})
