@@ -17,7 +17,7 @@ class Game {
         this.a
         this.b
         this.score
-    
+
         window.addEventListener('resize', () => {
             if (this.answersWrap.classList.contains('ingame')) {
                 this.move(1)
@@ -67,7 +67,6 @@ class Game {
         this.startGameButton.addEventListener('click', this.inGame.bind(this))
         this.XGame.addEventListener('click', () => this.endGame(this.userScore))
     }
-
     startGame() {
         this.toggleClass(document.querySelectorAll('.start'), 'start', 'ingame')
     }
@@ -127,46 +126,61 @@ class Game {
         }, time)
     }
     createExcersiseValues(lvl, numOfIterations) {
-        if (lvl == 'easy') {
-            this.a = Math.floor((Math.random() * 50))
-            this.b = Math.floor((Math.random() * 50))
-        } else if (lvl == 'medium' && numOfIterations < 7) {
-            this.a = Math.floor((Math.random() * 50) + 25)
-            this.b = Math.floor((Math.random() * 50) + 25)
-        } else if (lvl == 'medium' && numOfIterations >= 7) {
-            this.a = Math.floor((Math.random() * 13) + 5)
-            this.b = Math.floor((Math.random() * 13) + 5)
-        } else if (lvl == 'hard' && numOfIterations <= 5) {
-            this.a = Math.floor((Math.random() * 50) + 13)
-            this.b = Math.floor((Math.random() * 50) + 13)
-        } else if (lvl == 'hard' && numOfIterations <= 7) {
-            this.a = Math.floor((Math.random() * 14) + 12)
-            this.b = Math.floor((Math.random() * 14) + 12)
-        } else if (lvl == 'hard' && numOfIterations > 7) {
-            this.a = Math.floor((Math.random() * 5) + 1)
-            this.b = Math.floor((Math.random() * 5) + 1)
+        switch (lvl) {
+            case 'easy':
+                this.a = Math.floor((Math.random() * 50))
+                this.b = Math.floor((Math.random() * 50))
+                break
+            case 'medium':
+                if (numOfIterations < 7) {
+                    this.a = Math.floor((Math.random() * 50) + 25)
+                    this.b = Math.floor((Math.random() * 50) + 25)
+                } else {
+                    this.a = Math.floor((Math.random() * 13) + 5)
+                    this.b = Math.floor((Math.random() * 13) + 5)
+                }
+                break
+            case 'hard':
+                if (numOfIterations <= 5) {
+                    this.a = Math.floor((Math.random() * 50) + 13)
+                    this.b = Math.floor((Math.random() * 50) + 13)
+                } else if (numOfIterations <= 7) {
+                    this.a = Math.floor((Math.random() * 14) + 12)
+                    this.b = Math.floor((Math.random() * 14) + 12)
+                } else {
+                    this.a = Math.floor((Math.random() * 5) + 1)
+                    this.b = Math.floor((Math.random() * 5) + 1)
+                }
+                break
         }
         return [this.a, this.b]
     }
     createScore(lvl, numOfIterations, a, b) {
-        if (lvl == 'easy' && numOfIterations < 5)
-            this.score = a + b;
-        else if (lvl == 'easy' && numOfIterations >= 5)
-            this.score = Math.max(a, b) - Math.min(a, b)
-        else if (lvl == 'medium' && numOfIterations <= 3) {
-            this.score = a + b;
-        } else if (lvl == 'medium' && numOfIterations <= 6) {
-            this.score = Math.max(a, b) - Math.min(a, b)
-        } else if (lvl == 'medium' && numOfIterations >= 7) {
-            this.score = a * b;
-        } else if (lvl == 'hard' && numOfIterations <= 1) {
-            this.score = a + b
-        } else if (lvl == 'hard' && numOfIterations <= 4) {
-            this.score = Math.max(a, b) - Math.min(a, b)
-        } else if (lvl == 'hard' && numOfIterations <= 7) {
-            this.score = a * b;
-        } else if (lvl == 'hard' && numOfIterations > 7) {
-            this.score = a ** b
+        switch (lvl) {
+            case 'easy':
+                if (numOfIterations < 5)
+                    this.score = a + b;
+                else
+                    this.score = Math.max(a, b) - Math.min(a, b)
+                break
+            case 'medium':
+                if (numOfIterations <= 3)
+                    this.score = a + b;
+                else if (numOfIterations <= 6)
+                    this.score = Math.max(a, b) - Math.min(a, b)
+                else
+                    this.score = a * b;
+                break
+            case 'hard':
+                if (numOfIterations <= 1)
+                    this.score = a + b
+                else if (numOfIterations <= 4)
+                    this.score = Math.max(a, b) - Math.min(a, b)
+                else if (numOfIterations <= 7)
+                    this.score = a * b;
+                else
+                    this.score = a ** b
+                break
         }
         return this.score
     }
@@ -196,28 +210,35 @@ class Game {
         }
     }
     createSpanInfotextContent(lvl, numOfIterations, a, b) {
-        if (lvl == 'easy' && numOfIterations < 5)
-            this.spanInfo.textContent = (`${a}+${b}=?`)
-        else if (lvl == 'easy' && numOfIterations >= 5)
-            this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
-        else if (lvl == 'medium' && numOfIterations <= 3)
-            this.spanInfo.textContent = (`${a}+${b}=?`)
-        else if (lvl == 'medium' && numOfIterations <= 6)
-            this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
-        else if (lvl == 'medium' && numOfIterations >= 7)
-            this.spanInfo.textContent = (`${a}*${b}=?`)
-        else if (lvl == 'hard' && numOfIterations <= 1) {
-            this.spanInfo.textContent = (`${a}+${b}=?`)
-        } else if (lvl == 'hard' && numOfIterations <= 4) {
-            this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
-        } else if (lvl == 'hard' && numOfIterations <= 7) {
-            this.spanInfo.textContent = (`${a}*${b}=?`)
-        } else if (lvl == 'hard' && numOfIterations > 7) {
-            this.spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
+        switch (lvl) {
+            case 'easy':
+                if (numOfIterations < 5)
+                    this.spanInfo.textContent = (`${a}+${b}=?`)
+                else
+                    this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+                break
+            case 'medium':
+                if (numOfIterations <= 3)
+                    this.spanInfo.textContent = (`${a}+${b}=?`)
+                else if (numOfIterations <= 6)
+                    this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+                else
+                    this.spanInfo.textContent = (`${a}*${b}=?`)
+                break
+            case 'hard':
+                if (numOfIterations <= 1)
+                    this.spanInfo.textContent = (`${a}+${b}=?`)
+                else if (numOfIterations <= 4)
+                    this.spanInfo.textContent = (`${Math.max(a, b)}-${Math.min(a, b)}=?`)
+                else if (numOfIterations <= 7)
+                    this.spanInfo.textContent = (`${a}*${b}=?`)
+                else
+                    this.spanInfo.innerHTML = (`${a}<sup>${b}</sup>=?`)
+                break
         }
     }
-    createShowProgress(_lvl, numOfIterations) {
-        switch (_lvl) {
+    createShowProgress(lvl, numOfIterations) {
+        switch (lvl) {
             case 'easy':
                 this.gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Łatwy`
                 break
