@@ -11,8 +11,6 @@
 - Webpack 
 - ESLint
 
-=======
-
 ## Tasks
 - [x] Polish language version
 - [x] Responsive
@@ -21,7 +19,6 @@
 ## Author:
 Mateusz Iwaniuk
 
-=======
 
 # 2.0 Update changes
 - Written new,modern code without styling by markups
