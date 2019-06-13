@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Math Game named "Easy Math 2.0"
 ## Used technologies 
 - HTML5
@@ -19,11 +18,12 @@
 ## Author:
 Mateusz Iwaniuk
 
+[Live demo](https://iwaniukooo11.github.io/prostamatma/)
+
 
 # 2.0 Update changes
 - Written new,modern code without styling by markups
 - Included CSS Grid
 - Included CSS BEM 
 - Changed name of project for english version
-
 
