@@ -1,0 +1,300 @@
+.game {
+    background-color: $color-grey;
+    color: $color-white;
+    padding: 10px 0;
+    display: grid;
+    justify-items: center;
+    justify-content: center;
+    row-gap: 20px;
+    font-size: 20px;
+    grid-template-columns: 10% 1fr 10%;
+    grid-template-rows: auto 1fr 56vh;
+
+    &>* {
+        grid-column: 2;
+    }
+
+    &__h2 {
+        color: $color-white;
+    }
+
+    &__button-wrap {
+        width: 100%;
+        display: flex;
+        position: relative;
+        z-index: 5;
+        justify-content: space-evenly;
+        padding: 15px 0;
+
+        &--after {
+            position: absolute;
+            content: "";
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: none;
+            z-index: 10;
+
+            &.ingame {
+                display: block;
+            }
+        }
+    }
+
+    &__btn-lvl {
+        padding: 5px;
+        font-size: 1.15em;
+        font-weight: bold;
+        background-color: $color-white;
+        border: none;
+        border-radius: 3px;
+
+        &.ingame {
+            opacity: 0.5;
+        }
+
+        &.on {
+            background-color: #44bd32;
+            color: $color-white;
+            opacity: 1;
+        }
+    }
+
+    //---//
+    &__content {
+        height: 55vh;
+        width: 100%;
+        padding: 10px;
+        background-color: #fff;
+        position: relative;
+        text-align: center;
+
+    }
+
+    &__score {
+        display: block;
+        font-size: 0.8em;
+
+        &.ingame {
+            display: none;
+        }
+
+        &.end {
+            font-size: 1em;
+        }
+    }
+
+    &__exercise {
+        color: black;
+        text-align: center;
+        width: 100%;
+        display: none;
+        transform: translate(-50%, -50%);
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        font-size: 2em;
+
+        &.ingame {
+            display: block;
+        }
+    }
+
+    &__btnStart {
+        position: absolute;
+        transform: translate(-50%, -50%);
+        top: 50%;
+        left: 50%;
+        padding: 10px 20px;
+        font-size: 30px;
+        color: $color-white;
+        background-color: $color-orange;
+        border: none;
+        border-radius: 10px;
+        font-weight: bold;
+        transition: .2s;
+
+        &.ingame {
+            display: none;
+        }
+    }
+
+    &__alert {
+        font-size: 35px;
+        text-align: center;
+        background-color: #000;
+        position: absolute;
+        -webkit-transform: translate(-50%, 0);
+        transform: translate(-50%, 0);
+        display: none;
+        top: 10px;
+        left: 50%;
+
+        @keyframes alert {
+            0% {
+                opacity: 0;
+            }
+
+            20% {
+                opacity: 1;
+            }
+
+            80% {
+                opacity: 1;
+            }
+
+            99% {
+                opacity: 0;
+                display: block;
+            }
+
+            100% {
+                opacity: 0;
+                display: none;
+            }
+        }
+
+
+        &.true {
+            background-color: $color-green;
+            display: block;
+
+            .i1 {
+                display: block;
+                padding: 2px 4px;
+            }
+        }
+
+        &.false {
+            background-color: $color-red;
+            display: block;
+            padding: 2px 7px;
+
+            .i2 {
+                display: block;
+            }
+        }
+    }
+
+    &__progress {
+        color: black;
+        font-size: 1.15em;
+        position: absolute;
+        text-align: left;
+        top: 10px;
+        left: 10px;
+
+        &.start {
+            display: none;
+        }
+
+        &.ingame {
+            display: block;
+        }
+    }
+
+    &__red-green-pop {
+        display: none;
+    }
+
+    &__end-game {
+        color: $color-white;
+        background-color: red;
+        position: absolute;
+        right: 5px;
+        top: 5px;
+        width: 30px;
+        height: 30px;
+        line-height: 30px;
+        text-align: center;
+        display: none;
+
+        &.ingame {
+            display: block;
+        }
+    }
+
+    &__answer-wrap {
+        position: absolute;
+        bottom: 5px;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        display: none;
+        padding-bottom: 10px;
+
+        &.ingame {
+            display: flex;
+        }
+    }
+
+    &__answer {
+        min-width: 20%;
+        max-width: 24%;
+        background-color: $color-grey;
+        color: $color-orange;
+        font-weight: bold;
+        border-radius: 5px;
+        font-size: 1.4em;
+        padding: 15px 0;
+    }
+}
+
+@media(min-width:640px) {
+    .game {
+        font-size: 24px;
+
+        &__score {
+            font-size: 1em;
+            padding-top: 15px;
+        }
+
+        &__btnStart {
+            font-size: 40px;
+        }
+
+        &__btn-lvl {
+            font-size: 1.2em;
+            padding: 7px 10px;
+        }
+
+        &__progress {
+            font-size: 1.22em;
+        }
+    }
+}
+
+@media(min-width:768px) {
+    .game {
+        &__end-game {
+            width: 50px;
+            line-height: 50px;
+            height: 50px;
+            font-size: 1.3em;
+        }
+    }
+}
+
+
+@media(min-width:960px) {
+    .game {
+        &__score {
+            width: 75%;
+            margin: 0 auto;
+        }
+    }
+}
+
+
+@media(min-width:1200px) {
+    .game {
+        font-size: 26px;
+
+        &__score.end {
+            font-size: 1.2em;
+        }
+    }
+
+}

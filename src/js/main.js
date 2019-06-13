@@ -1,16 +1,16 @@
 class Game {
     constructor() {
-        this.rowButton = document.querySelector('button.row')
-        this.playButtons = document.querySelectorAll('button.btnG')
-        this.startGameButton = document.querySelector('button.btnStart')
-        this.MainH3 = document.querySelector('h3.grey')
-        this.answersWrap = document.querySelector('div.answer-wrap')
-        this.XGame = document.querySelector('div.stop')
-        this.answerButtons = document.querySelectorAll('button.answer')
-        this.spanInfo = document.querySelector('span.game')
-        this.alert = document.querySelector('div.alert')
-        this.gameProgress = document.querySelector('div.game-progress')
-        this.gameBlock = document.querySelector('.button-wrap-after')
+        this.rowButton = document.querySelector('.about__row-btn')
+        this.playButtons = document.querySelectorAll('.game__btn-lvl')
+        this.startGameButton = document.querySelector('.game__btnStart')
+        this.MainStatus = document.querySelector('.game__score')
+        this.answersWrap = document.querySelector('.game__answer-wrap')
+        this.XGame = document.querySelector('.game__end-game')
+        this.answerButtons = document.querySelectorAll('.game__answer')
+        this.spanInfo = document.querySelector('.game__exercise')
+        this.alert = document.querySelector('.game__alert')
+         this.gameProgress = document.querySelector('.game__progress')
+        this.gameBlock = document.querySelector('.game__button-wrap--after')
         this.numOfIterations = 0
         this.lvl
         this.userScore = 0
@@ -27,9 +27,6 @@ class Game {
         this.rowButton.addEventListener('click', this.move)
         this.playButtons.forEach(e => {
             e.addEventListener('click', this.move)
-            e.addEventListener('click', e => {
-                this.lvl = e.target.classList
-            })
         })
         this.playButtons.forEach(e => {
             e.addEventListener('click', el => {
@@ -65,6 +62,7 @@ class Game {
             })
         })
         this.startGameButton.addEventListener('click', this.inGame.bind(this))
+
         this.XGame.addEventListener('click', () => this.endGame(this.userScore))
     }
     startGame() {
@@ -86,7 +84,8 @@ class Game {
 
         this.playButtons.forEach(e => {
             if (e.classList.contains('on'))
-                this.lvl = [...e.classList][0]
+                // this.lvl = [...e.classList][0]
+                this.lvl = e.dataset.lvl
         })
 
         this.arr = this.createExcersiseValues(this.lvl, this.numOfIterations)
@@ -102,8 +101,8 @@ class Game {
         this.toggleClass(document.querySelectorAll('.ingame'), 'ingame', 'start')
         this.changeInlineStyle(document.body, 'overflow', 'visible')
         this.changeInlineStyle(this.gameBlock, 'display', 'none')
-        this.MainH3.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
-        this.MainH3.classList.add('end')
+        this.MainStatus.innerHTML = `Twoja ilośc punktów: ${user_Score}/10 <br> Zagraj jeszcze raz!`
+        this.MainStatus.classList.add('end')
         this.resetScoreAndNumIteration()
     }
     toggleClass(obj, toRemove, toAdd) {
@@ -122,7 +121,7 @@ class Game {
     move(x = 500) {
         const time = x
         $('body,html').animate({
-            scrollTop: ($('div.wrap-game').offset().top - window.innerHeight / 4)
+            scrollTop: ($('.game__button-wrap').offset().top - window.innerHeight / 4)
         }, time)
     }
     createExcersiseValues(lvl, numOfIterations) {
@@ -185,7 +184,7 @@ class Game {
         return this.score
     }
     createAnswers(score) {
-        let usedIndexOFButtons = ""
+        let usedIndexOFButtons = ''
         let randomIndex = Math.floor((Math.random() * 4))
         this.answerButtons[randomIndex].textContent = score;
         usedIndexOFButtons += randomIndex;
@@ -249,6 +248,5 @@ class Game {
                 this.gameProgress.innerHTML = `${numOfIterations + 1}/10<br>Poziom: Trudny`
         }
     }
-
 }
 const gameMethod = new Game()

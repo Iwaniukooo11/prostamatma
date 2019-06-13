@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0;
+    maximum-scale=1.0;">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Easy Math!</title>
+    <link rel="icon" href="https://cdn3.iconfinder.com/data/icons/business/16/calculator_math-512.png">
+    <link href="https://fonts.googleapis.com/css?family=Raleway:400,700&amp;subset=latin-ext" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+        integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link rel="stylesheet" href="assets/css/style.css">
+</head>
+
+<body>
+    <header class='header'>
+        <div class="header__text">
+            <h1 class="header__h1 h1">Prosta</h1>
+            <h1 class="header__h1 h1">Matma</h1>
+        </div>
+        <i class="header__fas fas fa-bolt"></i>
+    </header>
+    <section class="about">
+        <h2 class="about__h2 myh2 grey">Pozwól sobie zrozumieć matematykę!</h2>
+        <p class='about__desc'>Masz dużo wolnego <span class="orange">czasu</span>? Nie masz co ze sobą zrobić jadąc
+            tramwajem
+            ze
+            szkoły? A może po prostu
+            masz
+            ochotę czasem wymęczyć swój <span class="orange">umysł</span>? Jeśli tak,to ten projekt powstał właśnie dla
+            <span class="orange">Ciebie</span>! Otwórz się na <span class="orange">matematykę</span>
+            i zacznij liczyć już teraz!
+        </p>
+        <ul class="about__list">
+            <li class="about__list--item">
+                <i class="about__fas fas fa-check"></i>Zadowolenie z liczenia
+            </li>
+            <li class="about__list--item">
+                <i class="about__fas fas fa-check"></i>Produktywne spędzanie czasu
+            </li>
+            <li class="about__list--item">
+                <i class="about__fas fas fa-check"></i>Poprawienie umiejętności
+            </li>
+        </ul>
+        <button class='about__row-btn'>
+            <i class="fas fa-angle-down about__row-i"></i>
+        </button>
+    </section>
+
+    <section class="game">
+        <h2 class='game__h2 myh2 orange'>Wybierz poziom trudności</h2>
+        <div class="game__button-wrap">
+            <div class="game__button-wrap--after"></div>
+            <button class='game__btn-lvl easy on start' data-lvl='easy'>Łatwy</button>
+            <button class='game__btn-lvl medium start' data-lvl='medium'>Średni</button>
+            <button class='game__btn-lvl hard start' data-lvl='hard'>Trudny</button>
+        </div>
+        <main class='game__content'>
+            <div class="game__alert">
+                <i class="game__red-green-pop fas fa-check i1"></i>
+                <i class="game__red-green-pop fas fa-times i2"></i>
+            </div>
+            <div class="game__progress start"> </div>
+            <button class="game__end-game start">
+                <i class="game__x-fas fas fa-times"></i>
+            </button>
+            <h3 class="h3 game__score start grey">Dla twojej wygody po rozpoczęciu gry zostanie zablokowana
+                możliwość
+                poruszania
+                się po stronie do czasu zakończenia rozrywki</h3>
+            <span class="game__exercise start">Przykładowe działanie</span>
+            <button class="game__btnStart start">Start!</button>
+            <div class="game__answer-wrap start">
+                <button class="game__answer">a</button>
+                <button class="game__answer">a</button>
+                <button class="game__answer">a</button>
+                <button class="game__answer">a</button>
+            </div>
+        </main>
+    </section>
+
+    <footer>Prosta Matma &copy;</footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.0.min.js"
+        integrity="sha256-BJeo0qm959uMBGb65z40ejJYGSgR7REI4+CW1fNKwOg=" crossorigin="anonymous"></script>
+    <script src="assets/js/bundle.min.js"></script>
+</body>
+
+</html>

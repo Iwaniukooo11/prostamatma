@@ -1,0 +1,49 @@
+@import 'variables';
+
+*,
+*::after,
+*::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Raleway', sans-serif;
+    background-color: rgb(241, 241, 241);
+}
+
+ul {
+    list-style: none;
+}
+
+button {
+    outline: none;
+    border: none;
+
+    &:hover {
+        cursor: pointer;
+    }
+}
+
+.orange {
+    color: $color-orange;
+}
+
+.grey {
+    color: $color-grey;
+}
+
+.myh2 {
+    text-align: center;
+    font-size: 1.6em;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+@import 'about';
+@import 'header';
+@import 'game';
+@import 'footer';

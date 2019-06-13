@@ -1,0 +1,29 @@
+.header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 27vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 8.5vh;
+    background-color: $color-grey;
+    color: $color-orange;
+    padding: 10px;
+    border-bottom-left-radius: 15px;
+    border-bottom-right-radius: 15px;
+    border: $headerBorder solid $color-grey;
+    border-top: none;
+    z-index: 2;
+
+    &__h1 {
+        font-size: 1em;
+        letter-spacing: 3px;
+    }
+
+    &__fas {
+        font-size: 2em;
+        padding-left: 10px;
+    }
+}

@@ -1,0 +1,33 @@
+footer {
+    width: 100%;
+    text-align: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    margin-bottom: 10px;
+    padding: 2px;
+    color: $color-grey;
+    background-color: $color-orange;
+    position: relative;
+
+    &::after {
+        content: "";
+        position: absolute;
+        width: 100%;
+        height: 10px;
+        top: 100%;
+        left: 0;
+        background-color: $color-grey;
+    }
+}
+
+@media(min-width:960px) {
+    footer {
+        font-size: 1.5em;
+    }
+}
+
+@media(min-width:1200px) {
+    footer {
+        font-size: 1.7em;
+    }
+}
