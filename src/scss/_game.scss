@@ -44,7 +44,7 @@
 
     &__btn-lvl {
         padding: 5px;
-        font-size: 1.15em;
+        font-size: 1.11em;
         font-weight: bold;
         background-color: $color-white;
         border: none;
@@ -61,7 +61,6 @@
         }
     }
 
-    //---//
     &__content {
         height: 55vh;
         width: 100%;
@@ -80,9 +79,7 @@
             display: none;
         }
 
-        &.end {
-            font-size: 1em;
-        }
+
     }
 
     &__exercise {
@@ -107,7 +104,7 @@
         top: 50%;
         left: 50%;
         padding: 10px 20px;
-        font-size: 30px;
+        font-size: 20px;
         color: $color-white;
         background-color: $color-orange;
         border: none;
@@ -179,7 +176,6 @@
 
     &__progress {
         color: black;
-        font-size: 1.15em;
         position: absolute;
         text-align: left;
         top: 10px;
@@ -237,17 +233,16 @@
         color: $color-orange;
         font-weight: bold;
         border-radius: 5px;
-        font-size: 1.4em;
+        font-size: 1.2em;
         padding: 15px 0;
     }
 }
 
 @media(min-width:640px) {
     .game {
-        font-size: 24px;
+        font-size: 22px;
 
         &__score {
-            font-size: 1em;
             padding-top: 15px;
         }
 
@@ -260,9 +255,7 @@
             padding: 7px 10px;
         }
 
-        &__progress {
-            font-size: 1.22em;
-        }
+
     }
 }
 
@@ -272,7 +265,7 @@
             width: 50px;
             line-height: 50px;
             height: 50px;
-            font-size: 1.3em;
+            font-size: 1.1em;
         }
     }
 }
@@ -292,9 +285,7 @@
     .game {
         font-size: 26px;
 
-        &__score.end {
-            font-size: 1.2em;
-        }
+
     }
 
 }

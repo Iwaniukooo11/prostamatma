@@ -1,5 +1,5 @@
 .about {
-    font-size: 20px;
+    font-size: 17px;
     min-height: 100vh;
     padding-top: 27vh;
     display: grid;
@@ -27,7 +27,7 @@
         flex-direction: column;
         font-weight: bold;
         text-align: center;
-        font-size: 1.25em;
+        font-size: 1.1em;
 
         &--item {
             margin: 10px 0;
@@ -71,13 +71,13 @@
     }
 }
 
-@media(min-width:640px) {
+@media (min-width: 640px) {
     .about {
-        font-size: 23px;
+        font-size: 18px;
     }
 }
 
-@media(min-width:768px) {
+@media (min-width: 768px) {
     .about {
         &__row-btn {
             width: 80px;
@@ -90,14 +90,14 @@
     }
 }
 
-@media(min-width:960px) {
+@media (min-width: 960px) {
     .about {
-        font-size: 25px;
+        font-size: 19px;
     }
 }
 
-@media(min-width:1200px) {
+@media (min-width: 1200px) {
     .about {
-        font-size: 27px;
+        font-size: 20px;
     }
 }
